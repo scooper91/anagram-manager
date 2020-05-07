@@ -14,5 +14,5 @@ deploy:
 	git checkout gh-pages || (git checkout --orphan gh-pages && git rm -rf .)
 	git checkout master website
 	git commit -m 'Deploy changes up to $(GITHUB_SHA)'
-	git push --repo "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" -u origin gh-pages
+	git push -q --repo "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" -u origin gh-pages > /dev/null 2>&1 || die 1 'Push failed'
 .PHONY: deploy

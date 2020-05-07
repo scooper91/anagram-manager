@@ -15,5 +15,5 @@ deploy:
 	git checkout master website
 	git mv -f website/* .
 	git commit -m 'Deploy changes up to $(GITHUB_SHA)'
-	git push -q --repo "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" -u origin gh-pages > /dev/null 2>&1 || die 1 'Push failed'
+	git push -q --repo "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" -u origin gh-pages > /dev/null 2>&1 || (echo 'Push failed' && exit 1)
 .PHONY: deploy

@@ -1,0 +1,15 @@
+{
+  "name": "anagram-manager-tests",
+  "version": "1.0.0",
+  "description": "Run tests for the Anagram Manager",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "author": "Sophie Cooper",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.2",
+    "puppeteer": "^3.0.3"
+  }
+}

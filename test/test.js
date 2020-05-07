@@ -11,7 +11,7 @@ describe('anagram manager', () => {
 	it('shows the title', async () => {
     browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
-    await page.goto(`file:${path.join(__dirname, '../index.html')}`);
+    await page.goto(`file:${path.join(__dirname, '../website/index.html')}`);
 
     const heading = await (await (await page.$('h1')).getProperty('textContent')).jsonValue();
     assert.equal(heading, 'Anagram Manager');

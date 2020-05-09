@@ -19,6 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Deploy
-        run: git fetch --prune --no-tags
+        run: git fetch --prune --no-tags --unshallow
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

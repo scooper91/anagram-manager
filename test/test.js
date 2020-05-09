@@ -36,8 +36,12 @@ describe('anagram manager', () => {
     assert.equal(labelText, 'What\'s the word?');
 
     const input = await label.$('input');
+
     const inputAutocomplete = await getProperty(input, 'autocomplete');
     assert.equal(inputAutocomplete, 'off');
+
+    const inputRequired = await getProperty(input, 'required');
+    assert.equal(inputRequired, true);
 
     const buttonText = await getText(await form.$('button'));
     assert.equal(buttonText, 'Jumble!');

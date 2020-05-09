@@ -44,5 +44,19 @@ describe('anagram manager', () => {
       assert.notEqual(word, 'someword');
       assert.equal(word.split('').sort().join(''), 'demoorsw');
     });
+
+    describe('when another word is entered', () => {
+      before(async () => {
+        await page.evaluate(() => document.querySelector('input').value = '');
+        await page.type('input', 'anotherthing');
+        await page.click('button');
+      });
+
+      it('shows the jumbled word', async () => {
+        const word = await getText(await page.$('div'));
+        assert.notEqual(word, 'anotherthing');
+        assert.equal(word.split('').sort().join(''), 'aeghhinnortt');
+      });
+    });
   });
 });

@@ -10,7 +10,7 @@
           const formData = new FormData(e.target);
           const word = formData.get('word');
           const shuffledWord = _.shuffle(word.split('')).join('');
-          document.getElementById('jumbled').appendChild(document.createTextNode(shuffledWord));
+          document.getElementById('jumbled').innerHTML = shuffledWord;
         });
       });
     </script>

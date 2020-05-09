@@ -29,7 +29,7 @@ describe('anagram manager', () => {
     assert.equal(heading, 'Anagram Manager');
   });
 
-  it('shows the entered word', async () => {
+  it('shows a form', async () => {
     const page = await launchPage();
     await goToSite(page);
 
@@ -38,17 +38,25 @@ describe('anagram manager', () => {
     const labelText = await getText(await form.$('label'));
     assert.equal(labelText, 'What\'s the word?');
 
-    await page.type('form label input', 'someword');
-
-    const button = await form.$('button');
-
-    const buttonText = await getText(button);
+    const buttonText = await getText(await form.$('button'));
     assert.equal(buttonText, 'Jumble!');
+  });
 
-    await button.click();
+  describe('when a word is entered', () => {
+    let page;
 
-    const word = await getText(await page.$('div'));
-    assert.notEqual(word, 'someword');
-    assert.equal(word.split('').sort().join(''), 'demoorsw');
+    beforeEach(async () => {
+      page = await launchPage();
+      await goToSite(page);
+
+      await page.type('form label input', 'someword');
+      await page.click('button');
+    });
+
+    it('shows the jumbled word', async () => {
+      const word = await getText(await page.$('div'));
+      assert.notEqual(word, 'someword');
+      assert.equal(word.split('').sort().join(''), 'demoorsw');
+    });
   });
 });

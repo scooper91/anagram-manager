@@ -9,7 +9,7 @@
           e.preventDefault();
           const formData = new FormData(e.target);
           const word = formData.get('word');
-          const shuffledWord = _.shuffle(word.split('')).join('');
+          const shuffledWord = _.shuffle(word.toUpperCase().split('')).join('');
           document.getElementById('jumbled').innerHTML = shuffledWord;
         });
       });

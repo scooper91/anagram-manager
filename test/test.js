@@ -51,8 +51,8 @@ describe('anagram manager', () => {
 
     it('shows the jumbled word', async () => {
       const word = await getText(await page.$('div'));
-      assert.notEqual(word, 'someword');
-      assert.equal(word.split('').sort().join(''), 'demoorsw');
+      assert.notEqual(word, 'SOMEWORD');
+      assert.equal(word.split('').sort().join(''), 'DEMOORSW');
     });
 
     describe('when another word is entered', () => {
@@ -64,8 +64,8 @@ describe('anagram manager', () => {
 
       it('shows the jumbled word', async () => {
         const word = await getText(await page.$('div'));
-        assert.notEqual(word, 'anotherthing');
-        assert.equal(word.split('').sort().join(''), 'aeghhinnortt');
+        assert.notEqual(word, 'ANOTHERTHING');
+        assert.equal(word.split('').sort().join(''), 'AEGHHINNORTT');
       });
     });
   });

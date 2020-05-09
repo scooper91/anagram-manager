@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('form').addEventListener('submit', e => {
           e.preventDefault();
           const formData = new FormData(e.target);
           const word = formData.get('word');
-          document.getElementById('jumbled').appendChild(document.createTextNode(word));
+          const shuffledWord = _.shuffle(word.split('')).join('');
+          document.getElementById('jumbled').appendChild(document.createTextNode(shuffledWord));
         });
       });
     </script>

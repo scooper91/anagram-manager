@@ -48,6 +48,7 @@ describe('anagram manager', () => {
     await button.click();
 
     const word = await getText(await page.$('div'));
-    assert.equal(word, 'someword');
+    assert.notEqual(word, 'someword');
+    assert.equal(word.split('').sort().join(''), 'demoorsw');
   });
 });

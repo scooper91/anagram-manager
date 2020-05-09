@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('form').addEventListener('submit', e => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          const word = formData.get('word');
+          document.getElementById('jumbled').appendChild(document.createTextNode(word));
+        });
+      });
+    </script>
+  </head>
   <body>
     <h1>Anagram Manager</h1>
+    <form>
+      <label>What's the word?<input name="word"></label>
+      <button>Jumble!</button>
+    </form>
+    <div id="jumbled"></div>
   </body>
 </html>

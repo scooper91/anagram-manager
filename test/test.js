@@ -6,8 +6,12 @@ const puppeteer = require('puppeteer');
 describe('anagram manager', () => {
   let browser, page;
 
+  async function getProperty(el, prop) {
+    return (await el.getProperty(prop)).jsonValue();
+  }
+
   async function getText(el) {
-    return (await el.getProperty('textContent')).jsonValue();
+    return await getProperty(el, 'textContent');
   }
 
   before(async () => {
@@ -26,8 +30,14 @@ describe('anagram manager', () => {
   it('shows a form', async () => {
     const form = await page.$('form');
 
-    const labelText = await getText(await form.$('label'));
+    const label = await form.$('label');
+
+    const labelText = await getText(label);
     assert.equal(labelText, 'What\'s the word?');
+
+    const input = await label.$('input');
+    const inputAutocomplete = await getProperty(input, 'autocomplete');
+    assert.equal(inputAutocomplete, 'off');
 
     const buttonText = await getText(await form.$('button'));
     assert.equal(buttonText, 'Jumble!');

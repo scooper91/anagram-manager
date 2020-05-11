@@ -100,6 +100,27 @@ describe('anagram manager', () => {
       });
     });
 
+    describe('when no valid characters are entered', () => {
+      before(() => enterNewWord(page, '________'));
+
+      it('shows a message', async () => {
+        const alert = await page.$('.alert');
+        assert.isNotNull(alert);
+
+        const message = await getText(alert);
+        assert.equal(message, 'No alphabetical characters entered');
+      });
+
+      describe('when a valid word is then entered', () => {
+        before(() => enterNewWord(page, 'hello'));
+
+        it('removes the message', async () => {
+          const message = await page.$('.alert');
+          assert.isNull(message);
+        });
+      });
+    });
+
     [1, 2].forEach(letterCount => {
       describe(`when a ${letterCount} letter word is entered`, () => {
         before(() => enterNewWord(page, Array(letterCount).fill('a').join('')));

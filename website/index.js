@@ -4,13 +4,27 @@ function getWord(form) {
 }
 
 function getRowCount(word) {
-    const length = word.length;
+  const length = word.length;
 
-    if (length > 0 && length <= 2) { return 1; }
-    if (length >= 3 && length <= 6) { return 2; }
-    if (length >= 7 && length <= 12) { return 3; }
-    if (length >= 13 && length <= 16) { return 4; }
-    if (length >= 17) { return 5; }
+  if (length > 0 && length <= 2) { return 1; }
+  if (length >= 3 && length <= 6) { return 2; }
+  if (length >= 7 && length <= 12) { return 3; }
+  if (length >= 13 && length <= 16) { return 4; }
+  if (length >= 17) { return 5; }
+}
+
+function removeOldMessage() {
+  if (document.querySelector('.alert')) {
+    document.querySelector('.alert').remove();
+  }
+}
+
+function showErrorMessage() {
+  const alert = document.createElement('div');
+  alert.className = 'alert';
+
+  alert.appendChild(document.createTextNode('No alphabetical characters entered'));
+  document.querySelector('form').insertAdjacentElement('afterend', alert);
 }
 
 function createRow(element) {
@@ -29,8 +43,11 @@ function createLetterElement() {
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('form').addEventListener('submit', e => {
     e.preventDefault();
+    removeOldMessage();
 
     const sanitisedWord = getWord(e.target).replace(/[^A-Za-z]/g, '');
+    if (!sanitisedWord.length) { showErrorMessage(); }
+
     const shuffledWord = _.shuffle(sanitisedWord.toUpperCase().split(''));
 
     const jumbledElement = document.getElementById('jumbled');

@@ -20,7 +20,16 @@ div#jumbled {
   text-align: center;
 }
 
-div.row div {
-  display: inline-block;
-  margin: 0.5em;
+div.row {
+  padding: 0.5em;
+}
+
+div.row .letter {
+  display: inline;
+  position: relative;
+  padding: 0 0.5em;
+}
+
+div.row .letter:nth-of-type(even) {
+  top: 0.6em;
 }

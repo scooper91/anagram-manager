@@ -1,3 +1,18 @@
+function getWord(form) {
+  const formData = new FormData(form);
+  return formData.get('word');
+}
+
+function getRowCount(word) {
+    const length = word.length;
+
+    if (length > 0 && length <= 2) { return 1; }
+    if (length >= 3 && length <= 6) { return 2; }
+    if (length >= 7 && length <= 12) { return 3; }
+    if (length >= 13 && length <= 16) { return 4; }
+    if (length >= 17) { return 5; }
+}
+
 function createRow(element) {
   const row = document.createElement('div');
   row.className = 'row';
@@ -5,44 +20,29 @@ function createRow(element) {
   return row;
 }
 
+function createLetterElement() {
+  const letterElement = document.createElement('div');
+  letterElement.className = 'letter';
+  return letterElement;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('form').addEventListener('submit', e => {
     e.preventDefault();
 
+    const wordToShuffle = getWord(e.target);
+    const shuffledWord = _.shuffle(wordToShuffle.toUpperCase().split(''));
+
     const jumbledElement = document.getElementById('jumbled');
     jumbledElement.innerHTML = '';
-    const formData = new FormData(e.target);
-    const input = formData.get('word');
-    const shuffledWord = _.shuffle(input.toUpperCase().split(''));
 
-    let rows;
+    const rowCount = getRowCount(shuffledWord);
 
-    if (shuffledWord.length > 0 && shuffledWord.length <= 2) {
-      rows = 1;
-    }
-
-    if (shuffledWord.length >= 3 && shuffledWord.length <= 6) {
-      rows = 2;
-    }
-
-    if (shuffledWord.length >= 7 && shuffledWord.length <= 12) {
-      rows = 3;
-    }
-
-    if (shuffledWord.length >= 13 && shuffledWord.length <= 16) {
-      rows = 4;
-    }
-
-    if (shuffledWord.length >= 17) {
-      rows = 5;
-    }
-
-    _.chunk(shuffledWord, Math.ceil(shuffledWord.length / rows)).forEach(chunk => {
+    _.chunk(shuffledWord, Math.ceil(shuffledWord.length / rowCount)).forEach(chunk => {
       const row = createRow(jumbledElement);
 
       chunk.forEach(letter => {
-        const letterElement = document.createElement('div');
-        letterElement.className = 'letter';
+        const letterElement = createLetterElement();
         letterElement.appendChild(document.createTextNode(letter));
         row.appendChild(letterElement);
       });

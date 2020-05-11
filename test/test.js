@@ -84,6 +84,22 @@ describe('anagram manager', () => {
       });
     });
 
+    describe('when a word with non-alphabetical characters is entered', () => {
+      before(() => enterNewWord(page, 'a😀 -_+/b!"385£$%^&*(c  ~@:?><d'));
+
+      it('strips the non-alphabetical characters', async () => {
+        const letters = await page.$$('div.row div.letter');
+        const word = await Promise.all(letters.map(async letter => await getText(letter)));
+
+        assert.equal(word.sort().join(''), 'ABCD');
+      });
+
+      it('has the correct amount of rows for the sanitised word', async () => {
+          const letters = await page.$$('div.row');
+          assert.equal(letters.length, 2);
+      });
+    });
+
     [1, 2].forEach(letterCount => {
       describe(`when a ${letterCount} letter word is entered`, () => {
         before(() => enterNewWord(page, Array(letterCount).fill('a').join('')));

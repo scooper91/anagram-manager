@@ -3,17 +3,7 @@
   <head>
     <link rel="stylesheet" type="text/css" href="styles.css"></link>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        document.querySelector('form').addEventListener('submit', e => {
-          e.preventDefault();
-          const formData = new FormData(e.target);
-          const word = formData.get('word');
-          const shuffledWord = _.shuffle(word.toUpperCase().split('')).join('');
-          document.getElementById('jumbled').innerHTML = shuffledWord;
-        });
-      });
-    </script>
+    <script src="index.js"></script>
   </head>
   <body>
     <h1>Anagram Manager</h1>

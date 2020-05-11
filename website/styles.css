@@ -19,3 +19,8 @@ div#jumbled {
   font-size: 3em;
   text-align: center;
 }
+
+div.row div {
+  display: inline-block;
+  margin: 0.5em;
+}

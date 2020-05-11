@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('form').addEventListener('submit', e => {
     e.preventDefault();
 
-    const wordToShuffle = getWord(e.target);
-    const shuffledWord = _.shuffle(wordToShuffle.toUpperCase().split(''));
+    const sanitisedWord = getWord(e.target).replace(/[^A-Za-z]/g, '');
+    const shuffledWord = _.shuffle(sanitisedWord.toUpperCase().split(''));
 
     const jumbledElement = document.getElementById('jumbled');
     jumbledElement.innerHTML = '';

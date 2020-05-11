@@ -4,25 +4,13 @@ function getWord(form) {
 }
 
 function getRowCount(word) {
-    if (word.length > 0 && word.length <= 2) {
-      return 1;
-    }
+    const length = word.length;
 
-    if (word.length >= 3 && word.length <= 6) {
-      return 2;
-    }
-
-    if (word.length >= 7 && word.length <= 12) {
-      return 3;
-    }
-
-    if (word.length >= 13 && word.length <= 16) {
-      return 4;
-    }
-
-    if (word.length >= 17) {
-      return 5;
-    }
+    if (length > 0 && length <= 2) { return 1; }
+    if (length >= 3 && length <= 6) { return 2; }
+    if (length >= 7 && length <= 12) { return 3; }
+    if (length >= 13 && length <= 16) { return 4; }
+    if (length >= 17) { return 5; }
 }
 
 function createRow(element) {

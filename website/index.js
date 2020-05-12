@@ -40,6 +40,23 @@ function createLetterElement() {
   return letterElement;
 }
 
+function showJumbledLetters(word) {
+  const jumbledElement = document.getElementById('jumbled');
+  jumbledElement.innerHTML = '';
+
+  const rowCount = getRowCount(word);
+
+  _.chunk(word, Math.ceil(word.length / rowCount)).forEach(chunk => {
+    const row = createRow(jumbledElement);
+
+    chunk.forEach(letter => {
+      const letterElement = createLetterElement();
+      letterElement.appendChild(document.createTextNode(letter));
+      row.appendChild(letterElement);
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('form').addEventListener('submit', e => {
     e.preventDefault();
@@ -50,19 +67,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const shuffledWord = _.shuffle(sanitisedWord.toUpperCase().split(''));
 
-    const jumbledElement = document.getElementById('jumbled');
-    jumbledElement.innerHTML = '';
+    showJumbledLetters(shuffledWord);
 
-    const rowCount = getRowCount(shuffledWord);
+    const boxesElement = document.getElementById('letter-boxes');
+    boxesElement.innerHTML = '';
 
-    _.chunk(shuffledWord, Math.ceil(shuffledWord.length / rowCount)).forEach(chunk => {
-      const row = createRow(jumbledElement);
-
-      chunk.forEach(letter => {
-        const letterElement = createLetterElement();
-        letterElement.appendChild(document.createTextNode(letter));
-        row.appendChild(letterElement);
-      });
+    shuffledWord.forEach(letter => {
+      const box = document.createElement('span');
+      box.className = 'letter-box';
+      boxesElement.appendChild(box);
     });
   });
 });

@@ -53,6 +53,14 @@ describe('anagram manager', () => {
     assert.equal(buttonText, 'Jumble!');
   });
 
+  it('shows no rows or boxes', async () => {
+    const rows = await page.$$('div.row');
+    assert.lengthOf(rows, 0);
+
+    const boxes = await page.$$('div .letter-boxes');
+    assert.lengthOf(boxes, 0);
+  });
+
   describe('when a word is entered', () => {
     before(async () => {
       await page.type('form label input', 'someword');
@@ -72,6 +80,11 @@ describe('anagram manager', () => {
       assert.lengthOf(rows, 3);
     });
 
+    it('shows a box for each letter', async () => {
+      const boxes = await page.$$('div .letter-box');
+      assert.lengthOf(boxes, 8);
+    });
+
     describe('when another word is entered', () => {
       before(() => enterNewWord(page, 'anotherthing'));
 
@@ -81,6 +94,11 @@ describe('anagram manager', () => {
 
         assert.notEqual(word.join(''), 'ANOTHERTHING');
         assert.equal(word.sort().join(''), 'AEGHHINNORTT');
+      });
+
+      it('shows a box for each letter', async () => {
+        const boxes = await page.$$('div .letter-box');
+        assert.lengthOf(boxes, 12);
       });
     });
 

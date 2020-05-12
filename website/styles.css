@@ -79,6 +79,7 @@ input.letter-box {
   border: 1px solid #000;
   font-size: 3em;
   text-align: center;
+  text-transform: uppercase;
 }
 
 input.letter-box:not(:last-child) {

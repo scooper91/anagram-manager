@@ -94,6 +94,14 @@ describe('anagram manager', () => {
       assert.equal(inputValue, 'a');
     });
 
+    it('selects the text when clicking in the letter box', async () => {
+      await page.type('input.letter-box', 'ab');
+      await page.click('input.letter-box');
+
+      const selectedText = await page.evaluate(() => document.getSelection().toString());
+      assert.equal(selectedText, 'A');
+    });
+
     describe('when another word is entered', () => {
       before(() => enterNewWord(page, 'anotherthing'));
 

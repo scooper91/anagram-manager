@@ -40,13 +40,13 @@ function createLetterElement() {
   return letterElement;
 }
 
-function showJumbledLetters(word) {
+function showJumbledLetters(letters) {
   const jumbledElement = document.getElementById('jumbled');
   jumbledElement.innerHTML = '';
 
-  const rowCount = getRowCount(word);
+  const rowCount = getRowCount(letters);
 
-  _.chunk(word, Math.ceil(word.length / rowCount)).forEach(chunk => {
+  _.chunk(letters, Math.ceil(letters.length / rowCount)).forEach(chunk => {
     const row = createRow(jumbledElement);
 
     chunk.forEach(letter => {
@@ -54,6 +54,17 @@ function showJumbledLetters(word) {
       letterElement.appendChild(document.createTextNode(letter));
       row.appendChild(letterElement);
     });
+  });
+}
+
+function showLetterBoxes(letters) {
+  const boxesElement = document.getElementById('letter-boxes');
+  boxesElement.innerHTML = '';
+
+  letters.forEach(letter => {
+    const box = document.createElement('span');
+    box.className = 'letter-box';
+    boxesElement.appendChild(box);
   });
 }
 
@@ -68,14 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const shuffledWord = _.shuffle(sanitisedWord.toUpperCase().split(''));
 
     showJumbledLetters(shuffledWord);
-
-    const boxesElement = document.getElementById('letter-boxes');
-    boxesElement.innerHTML = '';
-
-    shuffledWord.forEach(letter => {
-      const box = document.createElement('span');
-      box.className = 'letter-box';
-      boxesElement.appendChild(box);
-    });
+    showLetterBoxes(shuffledWord);
   });
 });

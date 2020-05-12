@@ -68,8 +68,8 @@ describe('anagram manager', () => {
     });
 
     it('shows the word over multiple lines', async () => {
-      const letters = await page.$$('div.row');
-      assert.equal(letters.length, 3);
+      const rows = await page.$$('div.row');
+      assert.lengthOf(rows, 3);
     });
 
     describe('when another word is entered', () => {
@@ -95,8 +95,8 @@ describe('anagram manager', () => {
       });
 
       it('has the correct amount of rows for the sanitised word', async () => {
-          const letters = await page.$$('div.row');
-          assert.equal(letters.length, 2);
+          const rows = await page.$$('div.row');
+          assert.lengthOf(rows, 2);
       });
     });
 
@@ -126,8 +126,8 @@ describe('anagram manager', () => {
         before(() => enterNewWord(page, Array(letterCount).fill('a').join('')));
 
         it('shows it on one line', async () => {
-          const letters = await page.$$('div.row');
-          assert.equal(letters.length, 1);
+          const rows = await page.$$('div.row');
+          assert.lengthOf(rows, 1);
         });
       });
     });
@@ -137,8 +137,8 @@ describe('anagram manager', () => {
         before(() => enterNewWord(page, Array(letterCount).fill('a').join('')));
 
         it('shows it on two lines', async () => {
-          const letters = await page.$$('div.row');
-          assert.equal(letters.length, 2);
+          const rows = await page.$$('div.row');
+          assert.lengthOf(rows, 2);
         });
       });
     });
@@ -148,8 +148,8 @@ describe('anagram manager', () => {
         before(() => enterNewWord(page, Array(letterCount).fill('a').join('')));
 
         it('shows it on three lines', async () => {
-          const letters = await page.$$('div.row');
-          assert.equal(letters.length, 3);
+          const rows = await page.$$('div.row');
+          assert.lengthOf(rows, 3);
         });
       });
     });
@@ -159,8 +159,8 @@ describe('anagram manager', () => {
         before(() => enterNewWord(page, Array(letterCount).fill('a').join('')));
 
         it('shows it on four lines', async () => {
-          const letters = await page.$$('div.row');
-          assert.equal(letters.length, 4);
+          const rows = await page.$$('div.row');
+          assert.lengthOf(rows, 4);
         });
       });
     });
@@ -170,8 +170,8 @@ describe('anagram manager', () => {
         before(() => enterNewWord(page, Array(letterCount).fill('a').join('')));
 
         it('shows it on five lines', async () => {
-          const letters = await page.$$('div.row');
-          assert.equal(letters.length, 5);
+          const rows = await page.$$('div.row');
+          assert.lengthOf(rows, 5);
         });
       });
     });

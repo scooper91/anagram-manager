@@ -62,8 +62,9 @@ function showLetterBoxes(letters) {
   boxesElement.innerHTML = '';
 
   letters.forEach(letter => {
-    const box = document.createElement('span');
+    const box = document.createElement('input');
     box.className = 'letter-box';
+    box.setAttribute('maxlength', 1);
     boxesElement.appendChild(box);
   });
 }

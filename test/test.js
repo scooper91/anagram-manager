@@ -15,8 +15,8 @@ describe('anagram manager', () => {
   }
 
   async function enterNewWord(page, word) {
-      await page.evaluate(() => document.querySelector('input').value = '');
-      await page.type('input', word);
+      await page.evaluate(() => document.querySelector('form input').value = '');
+      await page.type('form input', word);
       await page.click('button');
   }
 
@@ -57,7 +57,7 @@ describe('anagram manager', () => {
     const rows = await page.$$('div.row');
     assert.lengthOf(rows, 0);
 
-    const boxes = await page.$$('div .letter-boxes');
+    const boxes = await page.$$('div input.letter-boxes');
     assert.lengthOf(boxes, 0);
   });
 
@@ -81,8 +81,17 @@ describe('anagram manager', () => {
     });
 
     it('shows a box for each letter', async () => {
-      const boxes = await page.$$('div .letter-box');
+      const boxes = await page.$$('div input.letter-box');
       assert.lengthOf(boxes, 8);
+    });
+
+    it('only allows a single letter in a box', async () => {
+      await page.type('input.letter-box', 'ab');
+
+      const inputValue = await page.evaluate(() =>
+        document.querySelector('input.letter-box').value
+      );
+      assert.equal(inputValue, 'a');
     });
 
     describe('when another word is entered', () => {
@@ -97,7 +106,7 @@ describe('anagram manager', () => {
       });
 
       it('shows a box for each letter', async () => {
-        const boxes = await page.$$('div .letter-box');
+        const boxes = await page.$$('div input.letter-box');
         assert.lengthOf(boxes, 12);
       });
     });

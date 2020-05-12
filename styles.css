@@ -72,14 +72,16 @@ div#letter-boxes {
   justify-content: center;
 }
 
-span.letter-box {
+input.letter-box {
   display: inline;
-  height: 3em;
-  width: 3em;
+  height: 1em;
+  width: 1em;
   border: 1px solid #000;
-  background: #fff;
+  font-size: 3em;
+  text-align: center;
+  text-transform: uppercase;
 }
 
-span.letter-box:not(:last-child) {
+input.letter-box:not(:last-child) {
   margin-right: 1em;
 }

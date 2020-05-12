@@ -65,3 +65,21 @@ div.alert {
   color: #690000;
   font-weight: bold;
 }
+
+div#letter-boxes {
+  margin-top: 2em;
+  display: flex;
+  justify-content: center;
+}
+
+span.letter-box {
+  display: inline;
+  height: 3em;
+  width: 3em;
+  border: 1px solid #000;
+  background: #fff;
+}
+
+span.letter-box:not(:last-child) {
+  margin-right: 1em;
+}

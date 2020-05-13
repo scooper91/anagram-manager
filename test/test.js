@@ -86,20 +86,21 @@ describe('anagram manager', () => {
     });
 
     it('only allows a single letter in a box', async () => {
-      await page.type('input.letter-box', 'ab');
+      await page.type('input.letter-box', 'w');
 
       const inputValue = await page.evaluate(() =>
         document.querySelector('input.letter-box').value
       );
-      assert.equal(inputValue, 'a');
+      assert.equal(inputValue, 'w');
     });
 
     it('selects the text when clicking in the letter box', async () => {
-      await page.type('input.letter-box', 'ab');
+      await page.click('input.letter-box');
+      await page.type('input.letter-box', 'me');
       await page.click('input.letter-box');
 
       const selectedText = await page.evaluate(() => document.getSelection().toString());
-      assert.equal(selectedText, 'A');
+      assert.equal(selectedText, 'M');
     });
 
     describe('when a letter is typed into a letter box', () => {
@@ -109,6 +110,11 @@ describe('anagram manager', () => {
         const usedLetters = await page.$$('div.row div.letter.used');
         assert.lengthOf(usedLetters, 1);
         assert.equal(await getText(usedLetters[0]), 'O');
+      });
+
+      it('does not show letter as incorrect', async () => {
+        const incorrectBoxes = await page.$$('input.letter-box.incorrect');
+        assert.lengthOf(incorrectBoxes, 0);
       });
 
       describe('when the same letter is entered in the same box', () => {
@@ -121,6 +127,11 @@ describe('anagram manager', () => {
           const usedLetters = await page.$$('div.row div.letter.used');
           assert.lengthOf(usedLetters, 1);
           assert.equal(await getText(usedLetters[0]), 'O');
+        });
+
+        it('does not show letter as incorrect', async () => {
+          const incorrectBoxes = await page.$$('input.letter-box.incorrect');
+          assert.lengthOf(incorrectBoxes, 0);
         });
       });
 
@@ -138,6 +149,11 @@ describe('anagram manager', () => {
           assert.equal(await getText(usedLetters[0]), 'O');
           assert.equal(await getText(usedLetters[1]), 'O');
         });
+
+        it('does not show letter as incorrect', async () => {
+          const incorrectBoxes = await page.$$('input.letter-box.incorrect');
+          assert.lengthOf(incorrectBoxes, 0);
+        });
       });
 
       describe('when the letter is changed', () => {
@@ -151,10 +167,58 @@ describe('anagram manager', () => {
           assert.lengthOf(usedLetters, 1);
           assert.equal(await getText(usedLetters[0]), 'W');
         });
+
+        it('does not show letter as incorrect', async () => {
+          const incorrectBoxes = await page.$$('input.letter-box.incorrect');
+          assert.lengthOf(incorrectBoxes, 0);
+        });
+      });
+
+      describe('when a letter is entered which is not in the word', () => {
+        let pageError;
+
+        before(async () => {
+          page.on('pageerror', e => pageError = e);
+
+          await page.click('input.letter-box');
+          await page.type('input.letter-box', 'q');
+        });
+
+        it('alerts the user the letter is not right', async () => {
+          const incorrectBoxes = await page.$$('input.letter-box.incorrect');
+          assert.lengthOf(incorrectBoxes, 1);
+        });
+
+        it('does not error', () => assert.isUndefined(pageError));
+
+        describe('when the letter is removed', () => {
+          before(async () => {
+            await page.click('input.letter-box');
+            await page.keyboard.press('Delete');
+          });
+
+          it('removes the alert', async () => {
+            const incorrectBoxes = await page.$$('input.letter-box.incorrect');
+            assert.lengthOf(incorrectBoxes, 0);
+          });
+        });
+
+        describe('when the letter is changed to a valid letter', () => {
+          before(async () => {
+            await page.click('input.letter-box');
+            await page.type('input.letter-box', 'm');
+          });
+
+          it('removes the alert', async () => {
+            const incorrectBoxes = await page.$$('input.letter-box.incorrect');
+            assert.lengthOf(incorrectBoxes, 0);
+          });
+        });
       });
 
       describe('when the letter is removed', () => {
         before(async () => {
+          await page.type('input.letter-box', 'p');
           await page.click('input.letter-box');
           await page.keyboard.press('Delete');
         });
@@ -164,6 +228,11 @@ describe('anagram manager', () => {
           assert.lengthOf(usedLetters, 0);
         });
 
+        it('does not show letter as incorrect', async () => {
+          const incorrectBoxes = await page.$$('input.letter-box.incorrect');
+          assert.lengthOf(incorrectBoxes, 0);
+        });
+
         describe('when another letter is entered in the same box', () => {
           before(() => page.type('input.letter-box', 's'));
 
@@ -171,6 +240,11 @@ describe('anagram manager', () => {
             const usedLetters = await page.$$('div.row div.letter.used');
             assert.lengthOf(usedLetters, 1);
             assert.equal(await getText(usedLetters[0]), 'S');
+          });
+
+          it('does not show letter as incorrect', async () => {
+            const incorrectBoxes = await page.$$('input.letter-box.incorrect');
+            assert.lengthOf(incorrectBoxes, 0);
           });
         });
       });

@@ -89,3 +89,8 @@ input.letter-box {
 input.letter-box:not(:last-child) {
   margin-right: 0.4em;
 }
+
+input.letter-box.incorrect {
+  border-color: #ff0000;
+  color: #ff0000;
+}

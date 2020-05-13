@@ -58,12 +58,17 @@ function showJumbledLetters(letters) {
 }
 
 function handleLetterBoxInput(box, input) {
+  box.classList.remove('incorrect');
+
   const inputtedLetter = input && input.toUpperCase();
 
   const previousLetter = box.getAttribute('data-letter');
   if (previousLetter === inputtedLetter) { return; }
 
   const letterElements = [...document.querySelectorAll('div.letter')];
+  const matchingLetter = letterElements.find(letter => letter.innerText === inputtedLetter);
+
+  if (!matchingLetter && inputtedLetter) { box.classList.add('incorrect'); }
 
   if (previousLetter) {
     const letterToUnmark = letterElements.find(letter =>
@@ -71,7 +76,7 @@ function handleLetterBoxInput(box, input) {
     letterToUnmark.classList.remove('used');
   }
 
-  if (!inputtedLetter) { return box.removeAttribute('data-letter'); }
+  if (!inputtedLetter || !matchingLetter) { return box.removeAttribute('data-letter'); }
 
   const letterToMark = letterElements.find(letter =>
     letter.innerText === inputtedLetter && !letter.classList.contains('used'));

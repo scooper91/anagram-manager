@@ -57,6 +57,34 @@ function showJumbledLetters(letters) {
   });
 }
 
+function handleLetterBoxInput(box, input) {
+  box.classList.remove('incorrect');
+
+  const inputtedLetter = input && input.toUpperCase();
+
+  const previousLetter = box.getAttribute('data-letter');
+  if (previousLetter === inputtedLetter) { return; }
+
+  const letterElements = [...document.querySelectorAll('div.letter')];
+  const matchingLetter = letterElements.find(letter => letter.innerText === inputtedLetter);
+
+  if (!matchingLetter && inputtedLetter) { box.classList.add('incorrect'); }
+
+  if (previousLetter) {
+    const letterToUnmark = letterElements.find(letter =>
+      letter.innerText === previousLetter && letter.classList.contains('used'));
+    letterToUnmark.classList.remove('used');
+  }
+
+  if (!inputtedLetter || !matchingLetter) { return box.removeAttribute('data-letter'); }
+
+  const letterToMark = letterElements.find(letter =>
+    letter.innerText === inputtedLetter && !letter.classList.contains('used'));
+  letterToMark.classList.add('used');
+
+  box.setAttribute('data-letter', inputtedLetter);
+}
+
 function showLetterBoxes(letters) {
   const boxesElement = document.getElementById('letter-boxes');
   boxesElement.innerHTML = '';
@@ -66,6 +94,9 @@ function showLetterBoxes(letters) {
     box.className = 'letter-box';
     box.setAttribute('maxlength', 1);
     box.addEventListener('click', function () { this.select(); });
+
+    box.addEventListener('input', e => handleLetterBoxInput(box, e.data));
+
     boxesElement.appendChild(box);
   });
 }

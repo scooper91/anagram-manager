@@ -15,9 +15,9 @@ describe('anagram manager', () => {
   }
 
   async function enterNewWord(page, word) {
-      await page.evaluate(() => document.querySelector('form input').value = '');
-      await page.type('form input', word);
-      await page.click('button');
+    await page.evaluate(() => document.querySelector('form input').value = '');
+    await page.type('form input', word);
+    await page.click('button');
   }
 
   before(async () => {
@@ -102,6 +102,80 @@ describe('anagram manager', () => {
       assert.equal(selectedText, 'A');
     });
 
+    describe('when a letter is typed into a letter box', () => {
+      before(() => page.type('input.letter-box', 'o'));
+
+      it('marks the letter as used', async () => {
+        const usedLetters = await page.$$('div.row div.letter.used');
+        assert.lengthOf(usedLetters, 1);
+        assert.equal(await getText(usedLetters[0]), 'O');
+      });
+
+      describe('when the same letter is entered in the same box', () => {
+        before(async () => {
+          await page.click('input.letter-box');
+          await page.type('input.letter-box', 'o');
+        });
+
+        it('keeps the letter marked', async () => {
+          const usedLetters = await page.$$('div.row div.letter.used');
+          assert.lengthOf(usedLetters, 1);
+          assert.equal(await getText(usedLetters[0]), 'O');
+        });
+      });
+
+      describe('when the same letter is added to a different box', () => {
+        before(() => page.type('input.letter-box:nth-child(2)', 'o'));
+
+        after(async () => {
+          await page.click('input.letter-box:nth-child(2)');
+          await page.keyboard.press('Delete');
+        });
+
+        it('marks both letters as used', async () => {
+          const usedLetters = await page.$$('div.row div.letter.used');
+          assert.lengthOf(usedLetters, 2);
+          assert.equal(await getText(usedLetters[0]), 'O');
+          assert.equal(await getText(usedLetters[1]), 'O');
+        });
+      });
+
+      describe('when the letter is changed', () => {
+        before(async () => {
+          await page.click('input.letter-box');
+          await page.type('input.letter-box', 'w');
+        });
+
+        it('updates the marked letter', async () => {
+          const usedLetters = await page.$$('div.row div.letter.used');
+          assert.lengthOf(usedLetters, 1);
+          assert.equal(await getText(usedLetters[0]), 'W');
+        });
+      });
+
+      describe('when the letter is removed', () => {
+        before(async () => {
+          await page.click('input.letter-box');
+          await page.keyboard.press('Delete');
+        });
+
+        it('unmarks the letter', async () => {
+          const usedLetters = await page.$$('div.row div.letter.used');
+          assert.lengthOf(usedLetters, 0);
+        });
+
+        describe('when another letter is entered in the same box', () => {
+          before(() => page.type('input.letter-box', 's'));
+
+          it('marks the letter as used', async () => {
+            const usedLetters = await page.$$('div.row div.letter.used');
+            assert.lengthOf(usedLetters, 1);
+            assert.equal(await getText(usedLetters[0]), 'S');
+          });
+        });
+      });
+    });
+
     describe('when another word is entered', () => {
       before(() => enterNewWord(page, 'anotherthing'));
 
@@ -130,8 +204,8 @@ describe('anagram manager', () => {
       });
 
       it('has the correct amount of rows for the sanitised word', async () => {
-          const rows = await page.$$('div.row');
-          assert.lengthOf(rows, 2);
+        const rows = await page.$$('div.row');
+        assert.lengthOf(rows, 2);
       });
     });
 

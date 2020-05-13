@@ -66,6 +66,31 @@ function showLetterBoxes(letters) {
     box.className = 'letter-box';
     box.setAttribute('maxlength', 1);
     box.addEventListener('click', function () { this.select(); });
+    box.addEventListener('input', e => {
+      const inputtedLetter = e.data && e.data.toUpperCase();
+
+      const previousLetter = box.getAttribute('data-letter');
+      if (previousLetter === inputtedLetter) { return; }
+
+      const letterElements = [...document.querySelectorAll('div.letter')];
+
+      if (previousLetter) {
+        const letterToRemove = letterElements.find(letter =>
+          letter.innerText === previousLetter && letter.classList.contains('used'));
+        letterToRemove.classList.remove('used');
+      }
+
+      if (inputtedLetter) {
+        const addedLetter = letterElements.find(letter =>
+          letter.innerText === inputtedLetter && !letter.classList.contains('used'));
+        addedLetter.classList.add('used');
+
+        box.setAttribute('data-letter', inputtedLetter);
+      } else {
+        box.removeAttribute('data-letter');
+      }
+    });
+
     boxesElement.appendChild(box);
   });
 }

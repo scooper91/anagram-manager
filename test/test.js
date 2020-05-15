@@ -28,7 +28,12 @@ describe('anagram manager', () => {
 
   after(() => browser.close());
 
-  it('shows the title', async () => {
+  it('shows the page title', async () => {
+    const title = await page.title();
+    assert.equal(title, 'Anagram Manager');
+  });
+
+  it('shows the heading', async () => {
     const heading = await getText(await page.$('h1'));
     assert.equal(heading, 'Anagram Manager');
   });
